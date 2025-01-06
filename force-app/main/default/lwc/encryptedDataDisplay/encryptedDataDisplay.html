@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="Encrypted Data Display" icon-name="action:preview">
+        <div class="slds-p-around_medium">
+            <lightning-button
+                label={toggleButtonLabel}
+                onclick={handleToggle}
+                class="slds-m-bottom_small">
+            </lightning-button>
+
+            <template if:true={showDecrypted}>
+                <template for:each={decryptedFields} for:item="field">
+                    <div key={field.label} class="slds-m-bottom_x-small">
+                        <!-- Field label -->
+                        <span class="slds-text-color_success slds-text-title_bold">
+                            {field.label}
+                        </span>
+                        <!-- Decrypted value -->
+                        <div class="slds-box slds-theme_default slds-m-top_xx-small">
+                            {field.value}
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

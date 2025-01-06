@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="Field History Tracking" icon-name="custom:custom63">
+        <div class="slds-m-around_medium">
+            <!-- Display data in a table format -->
+            <template if:true={fieldHistoryData}>
+                <lightning-datatable
+                    key-field="fieldName"
+                    data={fieldHistoryData}
+                    columns={columns}
+                    hide-checkbox-column="true"
+                    resize-column-disabled="false">
+                </lightning-datatable>
+            </template>
+            
+            <!-- Display error message if there is an error -->
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-p-around_medium">
+                    <p>{error}</p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
