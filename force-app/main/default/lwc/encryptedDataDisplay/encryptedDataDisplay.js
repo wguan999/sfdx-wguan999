@@ -1,24 +1,27 @@
-import { LightningElement, api, wire } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import getDecryptedFields from "@salesforce/apex/EncryptedDataDisplayController.getDecryptedFields";
+import { refreshApex } from "@salesforce/apex";
 
 export default class EncryptedDataDisplay extends LightningElement {
     @api recordId;
     @api objectApiName;
-    decryptedFields = [];
-    showDecrypted = false; // Track whether decrypted data is visible
+    @track decryptedFields = [];
+    @track showDecrypted = false;
+    wiredDecryptedFields; // Stores the wired response for refreshing
 
     @wire(getDecryptedFields, {
         recordId: "$recordId",
         objectName: "$objectApiName",
     })
-    wiredDecryptedFields({ error, data }) {
-        if (data) {
-            this.decryptedFields = data.map((field) => ({
+    wiredData(result) {
+        this.wiredDecryptedFields = result; // Store response for refresh
+        if (result.data) {
+            this.decryptedFields = result.data.map((field) => ({
                 label: field.label,
                 value: field.value,
             }));
-        } else if (error) {
-            console.error("Error retrieving decrypted fields:", error);
+        } else if (result.error) {
+            console.error("Error retrieving decrypted fields:", result.error);
         }
     }
 
@@ -30,25 +33,10 @@ export default class EncryptedDataDisplay extends LightningElement {
 
     handleToggle() {
         this.showDecrypted = !this.showDecrypted;
-    }
 
-    handleMouseOver(event) {
-        const targetLabel = event.currentTarget.dataset.label;
-        const tooltip = this.template.querySelector(
-            `.slds-popover[data-label="${targetLabel}"]`
-        );
-        if (tooltip) {
-            tooltip.classList.remove("slds-hide");
-        }
-    }
-
-    handleMouseOut(event) {
-        const targetLabel = event.currentTarget.dataset.label;
-        const tooltip = this.template.querySelector(
-            `.slds-popover[data-label="${targetLabel}"]`
-        );
-        if (tooltip) {
-            tooltip.classList.add("slds-hide");
+        // Force refresh when toggling ON
+        if (this.showDecrypted) {
+            refreshApex(this.wiredDecryptedFields);
         }
     }
 }
