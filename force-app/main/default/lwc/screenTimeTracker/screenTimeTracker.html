@@ -3,20 +3,19 @@
         <div class="slds-p-around_medium">
             <lightning-layout vertical-align="center">
                 <lightning-layout-item class="slds-p-right_medium">
-                    <p class="slds-text-heading_medium">Total: {totalDurationFormatted}</p>
-                    <template if:true={currentSessionTimer}>
-                        <p class="slds-text-heading_large">{liveTimer}</p>
-                    </template>
-                    <template if:false={currentSessionTimer}>
-                        <p class="slds-text-heading_large">{totalDurationFormatted}</p>
-                    </template>
+                    <p class="slds-text-heading_medium">Total:</p>
+                    <p class="slds-text-heading_large">{totalDurationFormatted}</p>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-p-right_medium">
+                    <p class="slds-text-heading_medium">You:</p>
+                    <p class="slds-text-heading_large">{currentUserLiveFormatted}</p>
                 </lightning-layout-item>
                 <template if:true={currentSessionTimer}>
-                <lightning-layout-item>
-                    <p class="slds-text-heading_medium">Current Session:</p>
-                    <p class="slds-text-heading_large">{currentSessionTimer}</p>
-                </lightning-layout-item>
-            </template>
+                    <lightning-layout-item>
+                        <p class="slds-text-heading_medium">Current Session:</p>
+                        <p class="slds-text-heading_large">{currentSessionTimer}</p>
+                    </lightning-layout-item>
+                </template>
             </lightning-layout>
             <div style="max-height: 300px; overflow-y: auto;">
                 <lightning-datatable

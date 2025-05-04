@@ -1,0 +1,3 @@
+# Ignore Salesforce CLI local project files
+.sf/
+.sfdx/
